@@ -1,5 +1,5 @@
 Flask==2.3.2
 Flask-Cors==4.0.0
-joblib== 1.4.0
-scikit-learn==1.4.2
+joblib==1.4.0
+scikit-learn
 waitress==3.0.0
