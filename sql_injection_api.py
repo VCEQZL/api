@@ -3,7 +3,6 @@ from flask_cors import CORS
 import re
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
-from waitress import serve
 
 app = Flask(__name__)
 CORS(app)  # Allow Cross-Origin Resource Sharing
@@ -12,7 +11,7 @@ CORS(app)  # Allow Cross-Origin Resource Sharing
 tfidf_vectorizer = joblib.load("tfidf_vectorizer.pkl")
 model = joblib.load("trained_model.pkl")
 
-@app.route('/', methods=['POST'])
+@app.route('/.netlify/functions/detect-sql-injection', methods=['POST'])
 def detect_sql_injection_api():
     input_str = request.json.get('input_str')
 
@@ -27,7 +26,8 @@ def detect_sql_injection_api():
     query = tfidf_vectorizer.transform([input_str.lower()])
     prediction = model.predict(query)
 
-    return jsonify({"is_sql_injection": bool(prediction[0]), "message": "SQL injection detected"})
+    return jsonify({"is_sql_injection": bool(prediction[0]), "message": "SQL injection not detected"})
 
-if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=5009)
+# This block is not required for Netlify Functions
+#if __name__ == '__main__':
+#    app.run(host='0.0.0.0', port=5009)
